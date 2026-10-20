@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>받침 용사와 슬라임 몬스터</title>
+  <style>
+    @font-face {
+      font-family: "Galmuri";
+      src: url("fonts/Galmuri11.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Pretendard";
+      src: url("fonts/Pretendard-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    [hidden] { display: none !important; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #1a1c2c;
+      color: #f4f4f4;
+      font-family: "Galmuri", sans-serif;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    button { font-family: inherit; color: inherit; }
+    #screen-title, #screen-game, #screen-end, #screen-setup {
+      height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      padding-bottom: 7vh;
+    }
+    #screen-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 0;
+      background: #1a1c2c url("asset/pic/배경.png") center / cover no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    #screen-title[hidden], #screen-game[hidden], #screen-end[hidden], #screen-setup[hidden] {
+      display: none;
+    }
+    .title-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.6vh;
+    }
+    .title-logo {
+      width: min(73.6vw, 92.8vh);
+      height: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    #load-error {
+      margin: 0;
+      text-align: center;
+      font-size: 2.4vh;
+      color: #ffcd75;
+    }
+    #mode-cards {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2vh;
+    }
+    .mode-row { display: flex; justify-content: center; gap: 1.2vw; }
+    .mode-divider {
+      width: 10vw;
+      height: 4px;
+      margin: 0.2vh 0;
+      background: #94b0c2;
+    }
+    .mode-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      cursor: pointer;
+    }
+    .mode-card img {
+      width: 16.8vw;
+      height: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .mode-card:active:not(:disabled) { transform: translateY(2px); }
+    .mode-card:disabled { opacity: 0.45; cursor: default; }
+
+    #sound-dock {
+      position: fixed;
+      top: 1.2vh;
+      right: 1.4vw;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6vh;
+    }
+    #sound-btn {
+      width: 5.2vh;
+      height: 5.2vh;
+      min-width: 36px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.6vh;
+      background: rgba(41, 54, 111, 0.92);
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7, 0 2px 0 #1a1c2c;
+      cursor: pointer;
+      color: #ffcd75;
+    }
+    #sound-btn:active { transform: translateY(2px); }
+    #sound-btn.is-muted { color: #94b0c2; }
+    #volume-panel {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.2vh 0.8vw;
+      background: rgba(26, 28, 44, 0.92);
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7;
+    }
+    #volume-panel.is-open { display: flex; }
+    #volume-slider {
+      writing-mode: vertical-lr;
+      direction: rtl;
+      width: 2.4vh;
+      height: 14vh;
+      accent-color: #38b764;
+      cursor: pointer;
+    }
+
+    #site-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4vh 1.6vw;
+      padding: 0.8vh 2vw;
+      min-height: 5.5vh;
+      box-sizing: border-box;
+      background: rgba(26, 28, 44, 0.92);
+      border-top: 2px solid #1a1c2c;
+      font-size: 1.6vh;
+      line-height: 1.35;
+      color: #c0cbe0;
+      text-align: center;
+    }
+    #site-footer a {
+      color: #73eff7;
+      text-decoration: underline;
+    }
+    #site-footer .sep { color: #566c86; }
+
+    #screen-game {
+      display: grid;
+      grid-template-rows: 10vh 45vh 20vh 1fr;
+      height: calc(100vh - 7vh);
+      padding-bottom: 0;
+      box-sizing: border-box;
+    }
+    .hud {
+      display: flex;
+      align-items: center;
+      gap: 1.5vw;
+      padding: 0 7vw 0 2vw;
+      background: #2d2a4a;
+      border-bottom: 2px solid #1a1c2c;
+    }
+    #level { font-size: 3vh; min-width: 14vw; color: #ffcd75; }
+    .meters {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 42vw;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6vh;
+    }
+    .bar-row { display: flex; align-items: center; gap: 1vw; }
+    .bar {
+      flex: 1;
+      height: 2.2vh;
+      background: #1a1c2c;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #566c86;
+    }
+    #progress { height: 100%; width: 0; background: #38b764; }
+    #count { font-size: 2.4vh; min-width: 8vw; }
+    #timer-wrap {
+      flex: 0 0 18vw;
+      width: 18vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.8vw;
+      color: #ffcd75;
+      font-size: 2.6vh;
+    }
+    #timer-count {
+      min-width: 5vw;
+      text-align: right;
+      font-size: 3.6vh;
+      color: #ff6b82;
+      font-family: "Pretendard", sans-serif;
+    }
+    #hearts { display: flex; align-items: center; gap: 0.8vw; }
+    .heart-row { display: flex; gap: 0.4vw; }
+    .heart {
+      width: 6vh;
+      height: 6vh;
+      flex: 0 0 auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .stage-wrap {
+      position: relative;
+      background: #1a1c2c;
+      overflow: hidden;
+    }
+    .stage-frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    #stage {
+      width: 100%;
+      height: 100%;
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .actor, #shot {
+      position: absolute;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      pointer-events: none;
+    }
+    #hero-sprite { left: 6%; bottom: 4%; height: 78%; width: auto; }
+    #hero-sprite.hurt { animation: blink 0.18s steps(2, end) 4; }
+    #slime-sprite {
+      right: 8%;
+      bottom: 6%;
+      height: 52%;
+      width: auto;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+    #slime-sprite.is-boss {
+      height: 104%;
+      right: 2%;
+      bottom: 2%;
+    }
+    #slime-sprite.idle-sway:not(.hit) {
+      animation: slime-sway 1.5s ease-in-out infinite;
+    }
+    #slime-sprite.idle-hop:not(.hit) {
+      animation: slime-hop 0.9s ease-in-out infinite;
+    }
+    #slime-sprite.idle-float:not(.hit) {
+      animation: slime-float 2.2s ease-in-out infinite;
+    }
+    #slime-sprite.idle-wobble:not(.hit) {
+      animation: slime-wobble 1.3s ease-in-out infinite;
+    }
+    #slime-sprite.is-boss.idle-sway:not(.hit) {
+      animation-duration: 1.8s;
+    }
+    #slime-sprite.is-boss.idle-hop:not(.hit) {
+      animation-duration: 1.15s;
+    }
+    #slime-sprite.is-boss.idle-float:not(.hit) {
+      animation-duration: 2.6s;
+    }
+    #slime-sprite.is-boss.idle-wobble:not(.hit) {
+      animation-duration: 1.6s;
+    }
+    #slime-sprite.hit { animation: blink 0.45s steps(2, end) 3; }
+    #shot { width: 14%; height: auto; z-index: 3; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
+    }
+    @keyframes slime-sway {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-1.4vw); }
+      75% { transform: translateX(1.4vw); }
+    }
+    @keyframes slime-hop {
+      0%, 100% { transform: translateY(0) scaleY(1) scaleX(1); }
+      18% { transform: translateY(0) scaleY(0.88) scaleX(1.08); }
+      42% { transform: translateY(-2.4vh) scaleY(1.06) scaleX(0.94); }
+      62% { transform: translateY(0) scaleY(0.92) scaleX(1.05); }
+      78% { transform: translateY(-0.6vh) scaleY(1.02) scaleX(0.98); }
+    }
+    @keyframes slime-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2vh); }
+    }
+    @keyframes slime-wobble {
+      0%, 100% { transform: rotate(0deg) translateX(0); }
+      20% { transform: rotate(-9deg) translateX(-0.4vw); }
+      50% { transform: rotate(9deg) translateX(0.4vw); }
+      80% { transform: rotate(-5deg) translateX(-0.2vw); }
+    }
+    .scroll-layer {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(26, 28, 44, 0.35);
+    }
+    #stage-scroll.scroll-layer {
+      position: fixed;
+      z-index: 12;
+    }
+    .scroll-card { position: relative; width: min(78vh, 52vw); }
+    .scroll-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .scroll-copy {
+      position: absolute;
+      left: 14%;
+      right: 14%;
+      top: 28%;
+      bottom: 24%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2vh;
+      text-align: center;
+      color: #1a1c2c;
+      font-family: "Galmuri", sans-serif;
+    }
+    .scroll-copy p { margin: 0; }
+    #stage-title { font-size: 3.8vh; line-height: 1.25; }
+    #stage-sub { font-size: 2.6vh; line-height: 1.35; }
+    #stage-countdown {
+      margin-top: 0.6vh;
+      font-size: 2.2vh;
+      color: #5a3d2b;
+      opacity: 0.9;
+    }
+    #end-title {
+      font-size: 3.4vh;
+      color: #5a3d2b;
+      margin-bottom: 0.4vh;
+    }
+    #end-stats {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5vh;
+      font-size: 2.4vh;
+      line-height: 1.35;
+    }
+    #end-stats p { margin: 0; }
+    #end-copy {
+      margin-top: 1.6vh;
+      padding-top: 1.2vh;
+      border-top: 2px dashed rgba(90, 61, 43, 0.35);
+      font-family: "Pretendard", sans-serif;
+      font-size: 2.4vh;
+      line-height: 1.4;
+    }
+
+    #site-footer button.linkish {
+      margin: 0;
+      padding: 0;
+      border: none;
+      background: none;
+      color: #73eff7;
+      text-decoration: underline;
+      cursor: pointer;
+      font: inherit;
+    }
+    .modal-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4vh 4vw;
+      box-sizing: border-box;
+      background: rgba(26, 28, 44, 0.72);
+      image-rendering: pixelated;
+    }
+    .modal-card {
+      position: relative;
+      width: min(92vw, 440px);
+      max-height: min(86vh, 640px);
+      overflow: auto;
+      padding: 3vh 3vw 2.6vh;
+      box-sizing: border-box;
+      background: #2d2a4a;
+      color: #f4f4f4;
+      border: 4px solid #1a1c2c;
+      border-radius: 0;
+      box-shadow:
+        inset 0 0 0 2px #73eff7,
+        0 4px 0 #1a1c2c,
+        6px 8px 0 rgba(26, 28, 44, 0.85);
+      font-family: "Galmuri", sans-serif;
+    }
+    .modal-card h3 {
+      margin: 0 4vh 2vh 0;
+      padding-bottom: 1vh;
+      text-align: center;
+      font-size: 3.2vh;
+      color: #ffcd75;
+      border-bottom: 2px solid #566c86;
+      letter-spacing: 0.04em;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.2vh;
+      right: 1vw;
+      width: 4vh;
+      height: 4vh;
+      padding: 0;
+      border: 2px solid #1a1c2c;
+      border-radius: 0;
+      background: #b13e53;
+      color: #f4f4f4;
+      font-family: "Galmuri", sans-serif;
+      font-size: 2.4vh;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px #ff6b82, 0 2px 0 #1a1c2c;
+    }
+    .modal-close:active { transform: translateY(2px); box-shadow: inset 0 0 0 1px #ff6b82; }
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.6vh;
+      font-size: 2vh;
+      line-height: 1.5;
+    }
+    .modal-body p {
+      margin: 0;
+      padding: 1vh 1.2vw;
+      background: #1a1c2c;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #566c86;
+    }
+    .modal-body strong {
+      display: inline-block;
+      margin-bottom: 0.4vh;
+      color: #73eff7;
+    }
+    .creator-row {
+      display: flex;
+      align-items: center;
+      gap: 2vw;
+      padding: 1.2vh 1.2vw;
+      background: #1a1c2c;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #566c86;
+    }
+    .creator-avatar {
+      width: 11vh;
+      height: 11vh;
+      flex: 0 0 auto;
+      border-radius: 0;
+      border: 3px solid #1a1c2c;
+      box-shadow: inset 0 0 0 2px #ffcd75;
+      object-fit: cover;
+      background: #29366f;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .creator-meta { display: flex; flex-direction: column; gap: 0.5vh; }
+    .creator-name { font-size: 2.8vh; color: #ffcd75; }
+    .creator-handle { font-size: 2vh; color: #73eff7; }
+    .creator-bio {
+      margin: 1.4vh 0 0;
+      padding: 1vh 1.2vw;
+      font-size: 1.9vh;
+      line-height: 1.5;
+      color: #f4f4f4;
+      background: #1a1c2c;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #566c86;
+    }
+    .modal-cta {
+      display: block;
+      width: 100%;
+      margin-top: 1.6vh;
+      padding: 1.4vh 1vw;
+      box-sizing: border-box;
+      border: 2px solid #1a1c2c;
+      border-radius: 0;
+      background: #3b5dc9;
+      color: #f4f4f4;
+      font-size: 2.2vh;
+      font-family: "Galmuri", sans-serif;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px #73eff7, 0 3px 0 #1a1c2c;
+      text-align: center;
+      text-decoration: none;
+    }
+    .modal-cta:active { transform: translateY(2px); box-shadow: inset 0 0 0 1px #73eff7, 0 1px 0 #1a1c2c; }
+    .sentence {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1vh;
+      padding: 0 3vw;
+      background: #2d2a4a;
+      border-top: 2px solid #1a1c2c;
+      border-bottom: 2px solid #1a1c2c;
+    }
+    .ask-line, .done-line {
+      margin: 0;
+      font-family: "Pretendard", sans-serif;
+      font-size: 5vh;
+      line-height: 1.25;
+      text-align: center;
+    }
+    .blank {
+      display: inline-block;
+      min-width: 8vh;
+      height: 6vh;
+      margin: 0 0.4vw;
+      vertical-align: middle;
+      background: #f4f4f4;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #41a6f6;
+    }
+    #hint {
+      margin: 0;
+      min-height: 3.2vh;
+      font-size: 2.8vh;
+      color: #ffcd75;
+    }
+    #options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1vh;
+      padding: 1vh 1.5vw 1.5vh;
+      background: #1a1c2c;
+    }
+    .answer {
+      min-height: 15vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2vw;
+      background-color: transparent;
+      background-image: url("asset/pic/아이템/박스.png");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% 100%;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      border: none;
+      box-shadow: none;
+      color: #1a1c2c;
+      cursor: pointer;
+    }
+    .answer .num, .answer .word {
+      font-family: "Pretendard", sans-serif;
+      font-size: 7vh;
+      line-height: 1;
+    }
+    .answer:active:not(:disabled) { transform: translateY(2px); }
+    .answer:disabled { cursor: default; opacity: 1; }
+    .answer:disabled:not(.is-locked) {
+      color: #1a1c2c;
+      background-color: transparent;
+      background-image: url("asset/pic/아이템/박스.png");
+    }
+    .answer.is-locked { filter: grayscale(1); color: #566c86; }
+    .answer.is-correct { box-shadow: inset 0 0 0 4px #38b764; }
+    .answer.shake { animation: shake 0.3s linear; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    #screen-end {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2vh;
+      overflow: auto;
+      padding: 4vh 8vw 9vh;
+      background: #1a1c2c;
+    }
+    #screen-end .scroll-card { width: min(70vh, 48vw); }
+    .end-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vw;
+      margin-top: 2vh;
+    }
+    .end-actions button, #start-ready, .choice, #setup-back {
+      min-height: 10vh;
+      font-size: 3vh;
+      background: #3b5dc9;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7, 0 2px 0 #1a1c2c;
+      cursor: pointer;
+      color: #f4f4f4;
+    }
+    .end-actions button:active, #start-ready:active, .choice:active, #setup-back:active {
+      transform: translateY(2px);
+    }
+    .end-actions button:disabled { background: #566c86; color: #2d2a4a; cursor: default; }
+
+    #screen-setup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.6vh;
+      padding: 2vh 4vw 9vh;
+      overflow: hidden;
+      background: #1a1c2c url("asset/pic/배경.png") center / cover no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .setup-panel {
+      width: min(72vw, 920px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4vh;
+      padding: 2.2vh 3vw;
+      box-sizing: border-box;
+      background: rgba(26, 28, 44, 0.5);
+      border: 2px solid rgba(115, 239, 247, 0.55);
+      box-shadow: inset 0 0 0 1px rgba(255, 205, 117, 0.25);
+    }
+    #screen-setup h2 {
+      margin: 0;
+      font-size: 4.2vh;
+      color: #ffcd75;
+      text-shadow: 0 2px 0 #1a1c2c;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1vh 2vw;
+    }
+    .hero-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6vh 1.5vw;
+      background: rgba(41, 54, 111, 0.92);
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7;
+      cursor: pointer;
+    }
+    .hero-card img {
+      height: 16vh;
+      width: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .hero-card.is-on { box-shadow: inset 0 0 0 4px #ffcd75; }
+    .setup-block { text-align: center; }
+    .setup-block p {
+      margin: 0 0 0.6vh;
+      font-size: 2.8vh;
+      color: #ffcd75;
+      text-shadow: 0 1px 0 #1a1c2c;
+    }
+    .setup-divider {
+      width: 12vw;
+      height: 3px;
+      margin: 0.4vh 0 0.2vh;
+      background: #94b0c2;
+      box-shadow: 0 1px 0 #1a1c2c;
+    }
+    .setup-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2vw;
+    }
+    #start-ready {
+      min-width: 28vw;
+      min-height: 8vh;
+      font-size: 3.4vh;
+      background: #e85d04;
+      color: #fff8e8;
+      box-shadow: inset 0 0 0 1px #ffcd75, 0 2px 0 #1a1c2c;
+    }
+    #setup-back {
+      width: 8vh;
+      height: 8vh;
+      min-width: 8vh;
+      min-height: 8vh;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4vh;
+      line-height: 1;
+      background: #f0a05a;
+      color: #1a1c2c;
+      box-shadow: inset 0 0 0 1px #ffcd75, 0 2px 0 #1a1c2c;
+    }
+    .choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 1vw; }
+    .choice {
+      min-height: 7vh;
+      min-width: 12vw;
+      padding: 0 1vw;
+      font-size: 2.6vh;
+    }
+    .choice.is-on { background: #38b764; color: #1a1c2c; }
+  </style>
+</head>
+<body>
+  <div id="sound-dock">
+    <button id="sound-btn" type="button" aria-label="소리 조절" aria-expanded="false" title="소리 조절">♪</button>
+    <div id="volume-panel" aria-hidden="true">
+      <input id="volume-slider" type="range" min="0" max="100" value="50" orient="vertical" aria-label="음량">
+    </div>
+  </div>
+
+  <section id="screen-title">
+    <div class="title-stack">
+      <img class="title-logo" src="asset/pic/타이틀.png" alt="받침 용사와 슬라임 몬스터">
+      <p id="load-error" hidden>문제 파일을 열지 못했습니다. 폴더를 그냥 더블클릭하지 말고, 교실 컴퓨터에서 이 폴더를 여는 주소로 접속해 주세요.</p>
+      <div id="mode-cards">
+        <div class="mode-row" id="mode-row"></div>
+        <div class="mode-divider"></div>
+        <div class="mode-row" id="mode-all"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-game" hidden>
+    <header class="hud">
+      <div id="level">1단계</div>
+      <div class="meters">
+        <div class="bar-row">
+          <div class="bar"><div id="progress"></div></div>
+          <span id="count">0 / 5</span>
+        </div>
+      </div>
+      <div id="timer-wrap" hidden>
+        <span>남은 시간</span>
+        <span id="timer-count">0</span>
+      </div>
+      <div id="hearts"></div>
+    </header>
+    <div class="stage-wrap">
+      <div class="stage-frame">
+        <canvas id="stage" width="320" height="180"></canvas>
+        <img id="hero-sprite" class="actor" alt="">
+        <img id="slime-sprite" class="actor" alt="">
+        <img id="shot" alt="" hidden>
+      </div>
+      <div id="stage-scroll" class="scroll-layer" hidden>
+        <div class="scroll-card">
+          <img src="asset/pic/아이템/두루마리.png" alt="">
+          <div class="scroll-copy">
+            <p id="stage-title">1단계 성공!</p>
+            <p id="stage-sub">다음단계로 넘어가 볼까요?</p>
+            <p id="stage-countdown">3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sentence">
+      <div id="question"></div>
+      <p id="hint"></p>
+    </div>
+    <div id="options"></div>
+  </section>
+
+  <section id="screen-end" hidden>
+    <div class="scroll-card">
+      <img src="asset/pic/아이템/두루마리.png" alt="">
+      <div class="scroll-copy">
+        <p id="end-title">&lt;토벌 결과&gt;</p>
+        <div id="end-stats">
+          <p id="end-time"></p>
+          <p id="end-attacks"></p>
+          <p id="end-slimes"></p>
+        </div>
+        <p id="end-copy"></p>
+      </div>
+    </div>
+    <div class="end-actions">
+      <button id="home-btn" type="button">홈</button>
+      <button id="again-btn" type="button">다시 시작</button>
+    </div>
+  </section>
+
+  <section id="screen-setup" hidden>
+    <div class="setup-panel">
+      <h2>함께할 용사 선택</h2>
+      <div id="hero-cards" class="hero-grid"></div>
+      <div class="setup-block">
+        <p>제한 시간</p>
+        <div class="choices">
+          <button type="button" class="choice" data-set="timeLimit" data-value="0">없음</button>
+          <button type="button" class="choice" data-set="timeLimit" data-value="10">10초</button>
+          <button type="button" class="choice" data-set="timeLimit" data-value="20">20초</button>
+          <button type="button" class="choice" data-set="timeLimit" data-value="30">30초</button>
+        </div>
+      </div>
+      <div class="setup-block">
+        <p>하트 개수</p>
+        <div class="choices">
+          <button type="button" class="choice" data-set="hearts" data-value="3">3</button>
+          <button type="button" class="choice" data-set="hearts" data-value="5">5</button>
+          <button type="button" class="choice" data-set="hearts" data-value="7">7</button>
+        </div>
+      </div>
+      <div class="setup-divider" aria-hidden="true"></div>
+      <div class="setup-actions">
+        <button id="start-ready" type="button">시작하기</button>
+        <button id="setup-back" type="button" aria-label="모드 선택으로 돌아가기" title="모드 선택으로">↻</button>
+      </div>
+    </div>
+  </section>
+
+  <footer id="site-footer">
+    <span>© 2026 받침 용사와 슬라임 몬스터. All rights reserved.</span>
+    <span class="sep">|</span>
+    <button type="button" class="linkish" id="open-howto">이용방법</button>
+    <span class="sep">|</span>
+    <button type="button" class="linkish" id="open-creator">만든이</button>
+    <span class="sep">|</span>
+    <span>버전 v2.0</span>
+  </footer>
+
+  <div id="modal-howto" class="modal-layer" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="howto-title">
+      <button type="button" class="modal-close" data-close-modal aria-label="닫기">×</button>
+      <h3 id="howto-title">이용방법</h3>
+      <div class="modal-body">
+        <p><strong>세계관</strong><br>받침 마을에 슬라임 몬스터가 나타났다! 받침을 바르게 고르는 용사가 되면, 슬라임을 물리치고 마을을 지킬 수 있어요.</p>
+        <p><strong>어떻게 이용하나요?</strong><br>
+          ① 모드(홑·쌍·겹·종합) 고르기<br>
+          ② 용사·제한 시간·하트 고르기<br>
+          ③ 시작하기 누르기<br>
+          ④ 문장 빈칸에 어울리는 받침을 ①②③ 중에서 고르기
+        </p>
+        <p><strong>언제 쓰면 좋을까요?</strong><br>국어 받침 학습 시간, 아침 활동, 쉬는 시간 미니 게임, 복습·정리 시간에 짧게 돌려 보기 좋아요.</p>
+        <p><strong>누구와 함께?</strong><br>교실 친구들과 함께, 선생님과 한 문제씩, 또는 집에서 가족과 번갈아 가며 즐겨 보세요.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-creator" class="modal-layer" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="creator-title">
+      <button type="button" class="modal-close" data-close-modal aria-label="닫기">×</button>
+      <h3 id="creator-title">만든이</h3>
+      <div class="creator-row">
+        <img class="creator-avatar" src="asset/pic/프로필/난쌤.png" alt="난쌤 프로필">
+        <div class="creator-meta">
+          <div class="creator-name">난쌤</div>
+          <div class="creator-handle">@hello.nan_ssaem</div>
+        </div>
+      </div>
+      <p class="creator-bio">아이들과 교실에서 바로 쓰려고 만든 ‘받침 용사와 슬라임 몬스터’예요. 받침을 고르며 함께 모험하는 시간을 응원해요!</p>
+      <a class="modal-cta" href="https://www.instagram.com/hello.nan_ssaem/" target="_blank" rel="noopener noreferrer">인스타그램 놀러가기 →</a>
+    </div>
+  </div>
+
+  <audio id="bgm" src="asset/bgm/Quest_Across_the_Green_Hill.mp3" loop preload="auto"></audio>
+
+  <script src="js/hangul.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/draw.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

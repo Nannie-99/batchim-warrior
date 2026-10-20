@@ -1,0 +1,1821 @@
+{
+  "version": "2.0",
+  "note": "종합 모드는 3개 모드 150문항을 합쳐 무작위 출제",
+  "modes": {
+    "single": {
+      "label": "홑받침",
+      "items": [
+        {
+          "id": "single-01",
+          "sentence": "{value}이 활짝 피었어요.",
+          "answer": "꽃",
+          "options": [
+            "꽃",
+            "꼳",
+            "꼿"
+          ],
+          "type": "single",
+          "final": "ㅊ"
+        },
+        {
+          "id": "single-02",
+          "sentence": "할머니 {value}에 감자를 심어요.",
+          "answer": "밭",
+          "options": [
+            "밭",
+            "받",
+            "밧"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-03",
+          "sentence": "새 {value}을 입었어요.",
+          "answer": "옷",
+          "options": [
+            "옷",
+            "옫",
+            "옺"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-04",
+          "sentence": "부{value}에서 엄마가 요리해요.",
+          "answer": "엌",
+          "options": [
+            "엌",
+            "억",
+            "얻"
+          ],
+          "type": "single",
+          "final": "ㅋ"
+        },
+        {
+          "id": "single-05",
+          "sentence": "{value}에는 해가 떠 있어요.",
+          "answer": "낮",
+          "options": [
+            "낮",
+            "낟",
+            "낫"
+          ],
+          "type": "single",
+          "final": "ㅈ"
+        },
+        {
+          "id": "single-06",
+          "sentence": "{value}하늘에 별이 반짝여요.",
+          "answer": "밤",
+          "options": [
+            "밤",
+            "밥",
+            "방"
+          ],
+          "type": "single",
+          "final": "ㅁ"
+        },
+        {
+          "id": "single-07",
+          "sentence": "{value}으로 머리를 빗어요.",
+          "answer": "빗",
+          "options": [
+            "빗",
+            "빋",
+            "빛"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-08",
+          "sentence": "나뭇{value}이 초록색이에요.",
+          "answer": "잎",
+          "options": [
+            "잎",
+            "입",
+            "임"
+          ],
+          "type": "single",
+          "final": "ㅍ"
+        },
+        {
+          "id": "single-09",
+          "sentence": "무{value}에 고양이가 앉았어요.",
+          "answer": "릎",
+          "options": [
+            "릎",
+            "릅",
+            "릇"
+          ],
+          "type": "single",
+          "final": "ㅍ"
+        },
+        {
+          "id": "single-10",
+          "sentence": "{value}속에 다람쥐가 살아요.",
+          "answer": "숲",
+          "options": [
+            "숲",
+            "숩",
+            "숨"
+          ],
+          "type": "single",
+          "final": "ㅍ"
+        },
+        {
+          "id": "single-11",
+          "sentence": "{value}에 밥을 지어요.",
+          "answer": "솥",
+          "options": [
+            "솥",
+            "솓",
+            "솟"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-12",
+          "sentence": "이야기를 {value}까지 잘 들어요.",
+          "answer": "끝",
+          "options": [
+            "끝",
+            "끋",
+            "끛"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-13",
+          "sentence": "{value}빙수가 시원해요.",
+          "answer": "팥",
+          "options": [
+            "팥",
+            "팓",
+            "팟"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-14",
+          "sentence": "오늘은 햇{value}이 따뜻해요.",
+          "answer": "볕",
+          "options": [
+            "볕",
+            "볃",
+            "볓"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-15",
+          "sentence": "설날에 {value}놀이를 했어요.",
+          "answer": "윷",
+          "options": [
+            "윷",
+            "윧",
+            "윳"
+          ],
+          "type": "single",
+          "final": "ㅊ"
+        },
+        {
+          "id": "single-16",
+          "sentence": "{value}선 사람을 따라가지 않아요.",
+          "answer": "낯",
+          "options": [
+            "낯",
+            "낟",
+            "낫"
+          ],
+          "type": "single",
+          "final": "ㅊ"
+        },
+        {
+          "id": "single-17",
+          "sentence": "{value}가락으로 반찬을 집어요.",
+          "answer": "젓",
+          "options": [
+            "젓",
+            "젇",
+            "젗"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-18",
+          "sentence": "강아지가 {value}멍 짖어요.",
+          "answer": "멍",
+          "options": [
+            "멍",
+            "먼",
+            "멈"
+          ],
+          "type": "single",
+          "final": "ㅇ"
+        },
+        {
+          "id": "single-19",
+          "sentence": "{value}이 꿀을 먹어요.",
+          "answer": "곰",
+          "options": [
+            "곰",
+            "곤",
+            "공"
+          ],
+          "type": "single",
+          "final": "ㅁ"
+        },
+        {
+          "id": "single-20",
+          "sentence": "{value}사람을 만들었어요.",
+          "answer": "눈",
+          "options": [
+            "눈",
+            "눔",
+            "눙"
+          ],
+          "type": "single",
+          "final": "ㄴ"
+        },
+        {
+          "id": "single-21",
+          "sentence": "{value}님이 방긋 웃어요.",
+          "answer": "달",
+          "options": [
+            "달",
+            "단",
+            "닫"
+          ],
+          "type": "single",
+          "final": "ㄹ"
+        },
+        {
+          "id": "single-22",
+          "sentence": "이제 {value}에 가는 길이에요.",
+          "answer": "집",
+          "options": [
+            "집",
+            "짚",
+            "짐"
+          ],
+          "type": "single",
+          "final": "ㅂ"
+        },
+        {
+          "id": "single-23",
+          "sentence": "{value}상 위에 연필이 있어요.",
+          "answer": "책",
+          "options": [
+            "책",
+            "챜",
+            "챋"
+          ],
+          "type": "single",
+          "final": "ㄱ"
+        },
+        {
+          "id": "single-24",
+          "sentence": "{value}이 따뜻해요.",
+          "answer": "국",
+          "options": [
+            "국",
+            "궄",
+            "굳"
+          ],
+          "type": "single",
+          "final": "ㄱ"
+        },
+        {
+          "id": "single-25",
+          "sentence": "{value}을 친구와 나누어 먹어요.",
+          "answer": "떡",
+          "options": [
+            "떡",
+            "떸",
+            "떧"
+          ],
+          "type": "single",
+          "final": "ㄱ"
+        },
+        {
+          "id": "single-26",
+          "sentence": "친구와 한 {value}속을 꼭 지켜요.",
+          "answer": "약",
+          "options": [
+            "약",
+            "얔",
+            "얃"
+          ],
+          "type": "single",
+          "final": "ㄱ"
+        },
+        {
+          "id": "single-27",
+          "sentence": "{value}을 맛있게 먹어요.",
+          "answer": "밥",
+          "options": [
+            "밥",
+            "밮",
+            "방"
+          ],
+          "type": "single",
+          "final": "ㅂ"
+        },
+        {
+          "id": "single-28",
+          "sentence": "{value}을 크게 벌려요.",
+          "answer": "입",
+          "options": [
+            "입",
+            "잎",
+            "익"
+          ],
+          "type": "single",
+          "final": "ㅂ"
+        },
+        {
+          "id": "single-29",
+          "sentence": "{value}으로 나란히!",
+          "answer": "앞",
+          "options": [
+            "앞",
+            "압",
+            "앋"
+          ],
+          "type": "single",
+          "final": "ㅍ"
+        },
+        {
+          "id": "single-30",
+          "sentence": "{value}자리 친구와 인사해요.",
+          "answer": "옆",
+          "options": [
+            "옆",
+            "엽",
+            "엳"
+          ],
+          "type": "single",
+          "final": "ㅍ"
+        },
+        {
+          "id": "single-31",
+          "sentence": "중요한 곳에 {value}줄을 그어요.",
+          "answer": "밑",
+          "options": [
+            "밑",
+            "믿",
+            "밋"
+          ],
+          "type": "single",
+          "final": "ㅌ"
+        },
+        {
+          "id": "single-32",
+          "sentence": "하나, 둘, 셋 {value}자를 세어요.",
+          "answer": "숫",
+          "options": [
+            "숫",
+            "숟",
+            "숯"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-33",
+          "sentence": "{value}있는 수박이에요.",
+          "answer": "맛",
+          "options": [
+            "맛",
+            "맏",
+            "맡"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-34",
+          "sentence": "{value}이 반짝반짝 빛나요.",
+          "answer": "빛",
+          "options": [
+            "빛",
+            "빋",
+            "빚"
+          ],
+          "type": "single",
+          "final": "ㅊ"
+        },
+        {
+          "id": "single-35",
+          "sentence": "목이 말라서 {value}을 마셔요.",
+          "answer": "물",
+          "options": [
+            "물",
+            "문",
+            "묻"
+          ],
+          "type": "single",
+          "final": "ㄹ"
+        },
+        {
+          "id": "single-36",
+          "sentence": "밤하늘에 {value}이 반짝여요.",
+          "answer": "별",
+          "options": [
+            "별",
+            "변",
+            "볌"
+          ],
+          "type": "single",
+          "final": "ㄹ"
+        },
+        {
+          "id": "single-37",
+          "sentence": "주말에 {value}에 올라가요.",
+          "answer": "산",
+          "options": [
+            "산",
+            "삼",
+            "삳"
+          ],
+          "type": "single",
+          "final": "ㄴ"
+        },
+        {
+          "id": "single-38",
+          "sentence": "{value}물이 졸졸 흘러요.",
+          "answer": "강",
+          "options": [
+            "강",
+            "간",
+            "감"
+          ],
+          "type": "single",
+          "final": "ㅇ"
+        },
+        {
+          "id": "single-39",
+          "sentence": "운동장에서 {value}을 뻥 차요.",
+          "answer": "공",
+          "options": [
+            "공",
+            "곤",
+            "곡"
+          ],
+          "type": "single",
+          "final": "ㅇ"
+        },
+        {
+          "id": "single-40",
+          "sentence": "{value}을 깨끗이 씻어요.",
+          "answer": "손",
+          "options": [
+            "손",
+            "송",
+            "솓"
+          ],
+          "type": "single",
+          "final": "ㄴ"
+        },
+        {
+          "id": "single-41",
+          "sentence": "{value}을 살살 닫아요.",
+          "answer": "문",
+          "options": [
+            "문",
+            "뭄",
+            "뭉"
+          ],
+          "type": "single",
+          "final": "ㄴ"
+        },
+        {
+          "id": "single-42",
+          "sentence": "{value}을 건널 때는 좌우를 살펴요.",
+          "answer": "길",
+          "options": [
+            "길",
+            "긴",
+            "긱"
+          ],
+          "type": "single",
+          "final": "ㄹ"
+        },
+        {
+          "id": "single-43",
+          "sentence": "{value}을 까서 먹어요.",
+          "answer": "귤",
+          "options": [
+            "귤",
+            "균",
+            "귣"
+          ],
+          "type": "single",
+          "final": "ㄹ"
+        },
+        {
+          "id": "single-44",
+          "sentence": "{value}생님께 인사해요.",
+          "answer": "선",
+          "options": [
+            "선",
+            "섬",
+            "성"
+          ],
+          "type": "single",
+          "final": "ㄴ"
+        },
+        {
+          "id": "single-45",
+          "sentence": "화분에 {value}을 심어요.",
+          "answer": "콩",
+          "options": [
+            "콩",
+            "콘",
+            "콤"
+          ],
+          "type": "single",
+          "final": "ㅇ"
+        },
+        {
+          "id": "single-46",
+          "sentence": "블록으로 {value}을 높이 쌓아요.",
+          "answer": "탑",
+          "options": [
+            "탑",
+            "탚",
+            "탐"
+          ],
+          "type": "single",
+          "final": "ㅂ"
+        },
+        {
+          "id": "single-47",
+          "sentence": "{value}가락으로 국을 떠요.",
+          "answer": "숟",
+          "options": [
+            "숟",
+            "숫",
+            "숱"
+          ],
+          "type": "single",
+          "final": "ㄷ"
+        },
+        {
+          "id": "single-48",
+          "sentence": "{value} 쉬는 시간이에요.",
+          "answer": "곧",
+          "options": [
+            "곧",
+            "곳",
+            "곶"
+          ],
+          "type": "single",
+          "final": "ㄷ"
+        },
+        {
+          "id": "single-49",
+          "sentence": "수학 시간에 {value}셈을 배워요.",
+          "answer": "덧",
+          "options": [
+            "덧",
+            "덛",
+            "덭"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        },
+        {
+          "id": "single-50",
+          "sentence": "{value}으로 그림을 그려요.",
+          "answer": "붓",
+          "options": [
+            "붓",
+            "붇",
+            "붗"
+          ],
+          "type": "single",
+          "final": "ㅅ"
+        }
+      ]
+    },
+    "double": {
+      "label": "쌍받침",
+      "items": [
+        {
+          "id": "double-01",
+          "sentence": "{value}에 나가서 놀아요.",
+          "answer": "밖",
+          "options": [
+            "밖",
+            "박",
+            "밬"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-02",
+          "sentence": "창문 {value}을 보세요.",
+          "answer": "밖",
+          "options": [
+            "밖",
+            "박",
+            "밬"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-03",
+          "sentence": "사과 껍질을 {value}아요.",
+          "answer": "깎",
+          "options": [
+            "깎",
+            "깍",
+            "깤"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-04",
+          "sentence": "선생님이 연필을 {value}아 주셨어요.",
+          "answer": "깎",
+          "options": [
+            "깎",
+            "깍",
+            "깤"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-05",
+          "sentence": "이를 깨끗이 {value}아요.",
+          "answer": "닦",
+          "options": [
+            "닦",
+            "닥",
+            "닼"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-06",
+          "sentence": "손수건으로 땀을 {value}아요.",
+          "answer": "닦",
+          "options": [
+            "닦",
+            "닥",
+            "닼"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-07",
+          "sentence": "창문을 걸레로 {value}았어요.",
+          "answer": "닦",
+          "options": [
+            "닦",
+            "닥",
+            "닼"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-08",
+          "sentence": "운동화 끈을 {value}어요.",
+          "answer": "묶",
+          "options": [
+            "묶",
+            "묵",
+            "뭌"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-09",
+          "sentence": "리본으로 선물 상자를 {value}었어요.",
+          "answer": "묶",
+          "options": [
+            "묶",
+            "묵",
+            "뭌"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-10",
+          "sentence": "머리를 하나로 {value}었어요.",
+          "answer": "묶",
+          "options": [
+            "묶",
+            "묵",
+            "뭌"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-11",
+          "sentence": "엄마와 김치를 {value}아요.",
+          "answer": "볶",
+          "options": [
+            "볶",
+            "복",
+            "봌"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-12",
+          "sentence": "떡{value}이를 나누어 먹어요.",
+          "answer": "볶",
+          "options": [
+            "볶",
+            "복",
+            "봌"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-13",
+          "sentence": "물감을 {value}어요.",
+          "answer": "섞",
+          "options": [
+            "섞",
+            "석",
+            "섴"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-14",
+          "sentence": "빨강과 노랑을 {value}으면 주황이 돼요.",
+          "answer": "섞",
+          "options": [
+            "섞",
+            "석",
+            "섴"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-15",
+          "sentence": "밥과 나물을 잘 {value}어요.",
+          "answer": "섞",
+          "options": [
+            "섞",
+            "석",
+            "섴"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-16",
+          "sentence": "아빠와 {value}시를 했어요.",
+          "answer": "낚",
+          "options": [
+            "낚",
+            "낙",
+            "낰"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-17",
+          "sentence": "꽃으로 예쁜 화관을 {value}어요.",
+          "answer": "엮",
+          "options": [
+            "엮",
+            "역",
+            "옄"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-18",
+          "sentence": "처음 {value}는 일이라 떨려요.",
+          "answer": "겪",
+          "options": [
+            "겪",
+            "격",
+            "곀"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-19",
+          "sentence": "꽃을 {value}지 않아요.",
+          "answer": "꺾",
+          "options": [
+            "꺾",
+            "꺽",
+            "껔"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-20",
+          "sentence": "나뭇가지를 {value}지 마세요.",
+          "answer": "꺾",
+          "options": [
+            "꺾",
+            "꺽",
+            "껔"
+          ],
+          "type": "double",
+          "final": "ㄲ"
+        },
+        {
+          "id": "double-21",
+          "sentence": "책상 위에 연필이 {value}어요.",
+          "answer": "있",
+          "options": [
+            "있",
+            "잇",
+            "읻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-22",
+          "sentence": "재미{value}는 책이에요.",
+          "answer": "있",
+          "options": [
+            "있",
+            "잇",
+            "읻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-23",
+          "sentence": "학교에 {value}어요.",
+          "answer": "갔",
+          "options": [
+            "갔",
+            "갓",
+            "갇"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-24",
+          "sentence": "문구점에서 공책을 {value}어요.",
+          "answer": "샀",
+          "options": [
+            "샀",
+            "삿",
+            "삳"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-25",
+          "sentence": "할머니 댁에 놀러 {value}어요.",
+          "answer": "왔",
+          "options": [
+            "왔",
+            "왓",
+            "왇"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-26",
+          "sentence": "밤새 눈이 펑펑 {value}어요.",
+          "answer": "왔",
+          "options": [
+            "왔",
+            "왓",
+            "왇"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-27",
+          "sentence": "재미있는 영화를 {value}어요.",
+          "answer": "봤",
+          "options": [
+            "봤",
+            "봣",
+            "봗"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-28",
+          "sentence": "숙제를 다 {value}어요.",
+          "answer": "했",
+          "options": [
+            "했",
+            "햇",
+            "핻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-29",
+          "sentence": "친구들과 숨바꼭질을 {value}어요.",
+          "answer": "했",
+          "options": [
+            "했",
+            "햇",
+            "핻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-30",
+          "sentence": "할머니께 편지를 {value}어요.",
+          "answer": "썼",
+          "options": [
+            "썼",
+            "썻",
+            "썯"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-31",
+          "sentence": "노란 버스를 {value}어요.",
+          "answer": "탔",
+          "options": [
+            "탔",
+            "탓",
+            "탇"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-32",
+          "sentence": "어젯밤에 일찍 {value}어요.",
+          "answer": "잤",
+          "options": [
+            "잤",
+            "잣",
+            "잗"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-33",
+          "sentence": "소풍 도시락을 {value}어요.",
+          "answer": "쌌",
+          "options": [
+            "쌌",
+            "쌋",
+            "싿"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-34",
+          "sentence": "작년보다 키가 많이 {value}어요.",
+          "answer": "컸",
+          "options": [
+            "컸",
+            "컷",
+            "컫"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-35",
+          "sentence": "화분에서 새싹이 {value}어요.",
+          "answer": "났",
+          "options": [
+            "났",
+            "낫",
+            "낟"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-36",
+          "sentence": "줄을 맞춰 바르게 {value}어요.",
+          "answer": "섰",
+          "options": [
+            "섰",
+            "섯",
+            "섣"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-37",
+          "sentence": "저녁이 되니 해가 {value}어요.",
+          "answer": "졌",
+          "options": [
+            "졌",
+            "졋",
+            "젿"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-38",
+          "sentence": "친구에게 선물을 {value}어요.",
+          "answer": "줬",
+          "options": [
+            "줬",
+            "줫",
+            "줟"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-39",
+          "sentence": "어두워서 불을 {value}어요.",
+          "answer": "켰",
+          "options": [
+            "켰",
+            "켯",
+            "켣"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-40",
+          "sentence": "컵에 물이 가득 {value}어요.",
+          "answer": "찼",
+          "options": [
+            "찼",
+            "찻",
+            "찯"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-41",
+          "sentence": "발표할 때 용기를 {value}어요.",
+          "answer": "냈",
+          "options": [
+            "냈",
+            "냇",
+            "낻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-42",
+          "sentence": "가족 그림을 그{value}어요.",
+          "answer": "렸",
+          "options": [
+            "렸",
+            "렷",
+            "렫"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-43",
+          "sentence": "꽃이 활짝 피{value}어요.",
+          "answer": "었",
+          "options": [
+            "었",
+            "엇",
+            "얻"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-44",
+          "sentence": "의자에 바르게 앉{value}어요.",
+          "answer": "았",
+          "options": [
+            "았",
+            "앗",
+            "앋"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-45",
+          "sentence": "선생님께 칭찬을 받{value}어요.",
+          "answer": "았",
+          "options": [
+            "았",
+            "앗",
+            "앋"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-46",
+          "sentence": "동생과 사이좋게 놀{value}어요.",
+          "answer": "았",
+          "options": [
+            "았",
+            "앗",
+            "앋"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-47",
+          "sentence": "내 방을 깨끗이 치{value}어요.",
+          "answer": "웠",
+          "options": [
+            "웠",
+            "웟",
+            "웓"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-48",
+          "sentence": "시원한 물을 마{value}어요.",
+          "answer": "셨",
+          "options": [
+            "셨",
+            "셧",
+            "셛"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-49",
+          "sentence": "할아버지께서 오{value}어요.",
+          "answer": "셨",
+          "options": [
+            "셨",
+            "셧",
+            "셛"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        },
+        {
+          "id": "double-50",
+          "sentence": "다 같이 노래를 불{value}어요.",
+          "answer": "렀",
+          "options": [
+            "렀",
+            "럿",
+            "럳"
+          ],
+          "type": "double",
+          "final": "ㅆ"
+        }
+      ]
+    },
+    "cluster": {
+      "label": "겹받침",
+      "items": [
+        {
+          "id": "cluster-01",
+          "sentence": "의자에 {value}아요.",
+          "answer": "앉",
+          "options": [
+            "앉",
+            "않",
+            "앇"
+          ],
+          "type": "cluster",
+          "final": "ㄵ"
+        },
+        {
+          "id": "cluster-02",
+          "sentence": "바르게 {value}아서 책을 읽어요.",
+          "answer": "앉",
+          "options": [
+            "앉",
+            "않",
+            "앇"
+          ],
+          "type": "cluster",
+          "final": "ㄵ"
+        },
+        {
+          "id": "cluster-03",
+          "sentence": "숙제를 잊지 {value}았어요.",
+          "answer": "않",
+          "options": [
+            "않",
+            "앉",
+            "앓"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-04",
+          "sentence": "다치지 {value}게 조심해요.",
+          "answer": "않",
+          "options": [
+            "않",
+            "앉",
+            "앓"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-05",
+          "sentence": "운동장에 친구들이 {value}아요.",
+          "answer": "많",
+          "options": [
+            "많",
+            "맍",
+            "맗"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-06",
+          "sentence": "비가 {value}이 와요.",
+          "answer": "많",
+          "options": [
+            "많",
+            "맍",
+            "맗"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-07",
+          "sentence": "괜{value}아요, 다시 해 봐요.",
+          "answer": "찮",
+          "options": [
+            "찮",
+            "찭",
+            "찷"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-08",
+          "sentence": "책 위에 공책을 {value}어요.",
+          "answer": "얹",
+          "options": [
+            "얹",
+            "얺",
+            "얷"
+          ],
+          "type": "cluster",
+          "final": "ㄵ"
+        },
+        {
+          "id": "cluster-09",
+          "sentence": "줄넘기 줄이 {value}어졌어요.",
+          "answer": "끊",
+          "options": [
+            "끊",
+            "끉",
+            "끓"
+          ],
+          "type": "cluster",
+          "final": "ㄶ"
+        },
+        {
+          "id": "cluster-10",
+          "sentence": "{value}이 꼬끼오 울어요.",
+          "answer": "닭",
+          "options": [
+            "닭",
+            "닮",
+            "닯"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-11",
+          "sentence": "{value}장에 달걀이 있어요.",
+          "answer": "닭",
+          "options": [
+            "닭",
+            "닮",
+            "닯"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-12",
+          "sentence": "동화책을 {value}어요.",
+          "answer": "읽",
+          "options": [
+            "읽",
+            "읾",
+            "읿"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-13",
+          "sentence": "다 {value}은 책을 정리해요.",
+          "answer": "읽",
+          "options": [
+            "읽",
+            "읾",
+            "읿"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-14",
+          "sentence": "달이 참 {value}아요.",
+          "answer": "밝",
+          "options": [
+            "밝",
+            "밞",
+            "밟"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-15",
+          "sentence": "{value}은 목소리로 인사해요.",
+          "answer": "밝",
+          "options": [
+            "밝",
+            "밞",
+            "밟"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-16",
+          "sentence": "오늘은 하늘이 {value}아요.",
+          "answer": "맑",
+          "options": [
+            "맑",
+            "맒",
+            "맓"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-17",
+          "sentence": "{value}은 물이 흘러요.",
+          "answer": "맑",
+          "options": [
+            "맑",
+            "맒",
+            "맓"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-18",
+          "sentence": "{value}으로 그릇을 만들어요.",
+          "answer": "흙",
+          "options": [
+            "흙",
+            "흚",
+            "흛"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-19",
+          "sentence": "화분에 {value}을 담아요.",
+          "answer": "흙",
+          "options": [
+            "흙",
+            "흚",
+            "흛"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-20",
+          "sentence": "가려운 팔을 {value}었어요.",
+          "answer": "긁",
+          "options": [
+            "긁",
+            "긂",
+            "긃"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-21",
+          "sentence": "이 나무는 줄기가 {value}어요.",
+          "answer": "굵",
+          "options": [
+            "굵",
+            "굶",
+            "굷"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-22",
+          "sentence": "단풍잎이 {value}게 물들어요.",
+          "answer": "붉",
+          "options": [
+            "붉",
+            "붊",
+            "붋"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-23",
+          "sentence": "물감에 물을 많이 넣으면 {value}어져요.",
+          "answer": "묽",
+          "options": [
+            "묽",
+            "묾",
+            "묿"
+          ],
+          "type": "cluster",
+          "final": "ㄺ"
+        },
+        {
+          "id": "cluster-24",
+          "sentence": "나는 엄마를 {value}았어요.",
+          "answer": "닮",
+          "options": [
+            "닮",
+            "닭",
+            "닯"
+          ],
+          "type": "cluster",
+          "final": "ㄻ"
+        },
+        {
+          "id": "cluster-25",
+          "sentence": "서로 {value}은 모양을 찾아요.",
+          "answer": "닮",
+          "options": [
+            "닮",
+            "닭",
+            "닯"
+          ],
+          "type": "cluster",
+          "final": "ㄻ"
+        },
+        {
+          "id": "cluster-26",
+          "sentence": "책상을 교실 뒤로 {value}겼어요.",
+          "answer": "옮",
+          "options": [
+            "옮",
+            "옭",
+            "옯"
+          ],
+          "type": "cluster",
+          "final": "ㄻ"
+        },
+        {
+          "id": "cluster-27",
+          "sentence": "달걀을 {value}았어요.",
+          "answer": "삶",
+          "options": [
+            "삶",
+            "삵",
+            "삷"
+          ],
+          "type": "cluster",
+          "final": "ㄻ"
+        },
+        {
+          "id": "cluster-28",
+          "sentence": "우리 삼촌은 {value}어요.",
+          "answer": "젊",
+          "options": [
+            "젊",
+            "젉",
+            "젋"
+          ],
+          "type": "cluster",
+          "final": "ㄻ"
+        },
+        {
+          "id": "cluster-29",
+          "sentence": "운동장이 {value}어요.",
+          "answer": "넓",
+          "options": [
+            "넓",
+            "넑",
+            "넒"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-30",
+          "sentence": "{value}은 바다를 보았어요.",
+          "answer": "넓",
+          "options": [
+            "넓",
+            "넑",
+            "넒"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-31",
+          "sentence": "연필이 {value}아졌어요.",
+          "answer": "짧",
+          "options": [
+            "짧",
+            "짥",
+            "짦"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-32",
+          "sentence": "{value}은 연필도 아껴 써요.",
+          "answer": "짧",
+          "options": [
+            "짧",
+            "짥",
+            "짦"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-33",
+          "sentence": "이 종이는 {value}아요.",
+          "answer": "얇",
+          "options": [
+            "얇",
+            "얅",
+            "얆"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-34",
+          "sentence": "여름에는 {value}은 옷을 입어요.",
+          "answer": "얇",
+          "options": [
+            "얇",
+            "얅",
+            "얆"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-35",
+          "sentence": "개미를 {value}지 않게 조심해요.",
+          "answer": "밟",
+          "options": [
+            "밟",
+            "밝",
+            "밞"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-36",
+          "sentence": "문어는 다리가 여{value} 개예요.",
+          "answer": "덟",
+          "options": [
+            "덟",
+            "덝",
+            "덞"
+          ],
+          "type": "cluster",
+          "final": "ㄼ"
+        },
+        {
+          "id": "cluster-37",
+          "sentence": "고양이가 우유를 {value}아 먹어요.",
+          "answer": "핥",
+          "options": [
+            "핥",
+            "핣",
+            "핧"
+          ],
+          "type": "cluster",
+          "final": "ㄾ"
+        },
+        {
+          "id": "cluster-38",
+          "sentence": "강아지가 내 손을 {value}았어요.",
+          "answer": "핥",
+          "options": [
+            "핥",
+            "핣",
+            "핧"
+          ],
+          "type": "cluster",
+          "final": "ㄾ"
+        },
+        {
+          "id": "cluster-39",
+          "sentence": "책을 처음부터 쭉 {value}어보았어요.",
+          "answer": "훑",
+          "options": [
+            "훑",
+            "훏",
+            "훓"
+          ],
+          "type": "cluster",
+          "final": "ㄾ"
+        },
+        {
+          "id": "cluster-40",
+          "sentence": "친구 앞에서 동시를 {value}어요.",
+          "answer": "읊",
+          "options": [
+            "읊",
+            "읇",
+            "읉"
+          ],
+          "type": "cluster",
+          "final": "ㄿ"
+        },
+        {
+          "id": "cluster-41",
+          "sentence": "물이 보글보글 {value}어요.",
+          "answer": "끓",
+          "options": [
+            "끓",
+            "끊",
+            "끑"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-42",
+          "sentence": "지갑을 {value}어버렸어요.",
+          "answer": "잃",
+          "options": [
+            "잃",
+            "읽",
+            "읺"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-43",
+          "sentence": "{value}지! 정말 잘했어요.",
+          "answer": "옳",
+          "options": [
+            "옳",
+            "옪",
+            "옱"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-44",
+          "sentence": "종이에 구멍을 {value}었어요.",
+          "answer": "뚫",
+          "options": [
+            "뚫",
+            "뚢",
+            "뚩"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-45",
+          "sentence": "오래 신은 운동화가 {value}았어요.",
+          "answer": "닳",
+          "options": [
+            "닳",
+            "닭",
+            "닪"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-46",
+          "sentence": "나는 친구와 다투는 게 {value}어요.",
+          "answer": "싫",
+          "options": [
+            "싫",
+            "싢",
+            "싩"
+          ],
+          "type": "cluster",
+          "final": "ㅀ"
+        },
+        {
+          "id": "cluster-47",
+          "sentence": "주머니에 동전이 {value}어요.",
+          "answer": "없",
+          "options": [
+            "없",
+            "얷",
+            "얿"
+          ],
+          "type": "cluster",
+          "final": "ㅄ"
+        },
+        {
+          "id": "cluster-48",
+          "sentence": "걱정할 필요 {value}어요.",
+          "answer": "없",
+          "options": [
+            "없",
+            "얷",
+            "얿"
+          ],
+          "type": "cluster",
+          "final": "ㅄ"
+        },
+        {
+          "id": "cluster-49",
+          "sentence": "이 과자 {value}은 천 원이에요.",
+          "answer": "값",
+          "options": [
+            "값",
+            "갃",
+            "갋"
+          ],
+          "type": "cluster",
+          "final": "ㅄ"
+        },
+        {
+          "id": "cluster-50",
+          "sentence": "자기 {value}을 사이좋게 나누어요.",
+          "answer": "몫",
+          "options": [
+            "몫",
+            "몺",
+            "몱"
+          ],
+          "type": "cluster",
+          "final": "ㄳ"
+        }
+      ]
+    }
+  }
+}
