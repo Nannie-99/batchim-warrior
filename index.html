@@ -108,10 +108,17 @@
       z-index: 40;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-end;
       gap: 0.6vh;
     }
-    #sound-btn {
+    #dock-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.6vw;
+    }
+    #sound-btn, #quit-btn {
+      position: relative;
       width: 5.2vh;
       height: 5.2vh;
       min-width: 36px;
@@ -125,19 +132,50 @@
       box-shadow: inset 0 0 0 1px #73eff7, 0 2px 0 #1a1c2c;
       cursor: pointer;
       color: #ffcd75;
+      padding: 0;
     }
-    #sound-btn:active { transform: translateY(2px); }
+    #sound-btn:active, #quit-btn:active { transform: translateY(2px); }
     #sound-btn.is-muted { color: #94b0c2; }
+    #sound-btn.is-muted::after {
+      content: "";
+      position: absolute;
+      left: 22%;
+      width: 56%;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      background: #ff6b82;
+      transform: rotate(-42deg);
+      pointer-events: none;
+    }
     #volume-panel {
       display: none;
       flex-direction: column;
       align-items: center;
-      padding: 1.2vh 0.8vw;
+      gap: 0.8vh;
+      min-width: 10vh;
+      padding: 1vh 0.7vw 1.2vh;
+      box-sizing: border-box;
       background: rgba(26, 28, 44, 0.92);
       border: 2px solid #1a1c2c;
       box-shadow: inset 0 0 0 1px #73eff7;
     }
     #volume-panel.is-open { display: flex; }
+    #mute-btn {
+      width: 100%;
+      min-height: 3.4vh;
+      padding: 0.4vh 0.4vw;
+      font-family: inherit;
+      font-size: 1.7vh;
+      line-height: 1.2;
+      color: #ffcd75;
+      background: rgba(41, 54, 111, 0.92);
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7;
+      cursor: pointer;
+    }
+    #mute-btn:active { transform: translateY(2px); }
+    #mute-btn[aria-pressed="true"] { color: #94b0c2; }
     #volume-slider {
       writing-mode: vertical-lr;
       direction: rtl;
@@ -185,7 +223,7 @@
       display: flex;
       align-items: center;
       gap: 1.5vw;
-      padding: 0 7vw 0 2vw;
+      padding: 0 calc(3vw + max(11.6vh, 88px)) 0 2vw;
       background: #2d2a4a;
       border-bottom: 2px solid #1a1c2c;
     }
@@ -547,15 +585,25 @@
       line-height: 1.25;
       text-align: center;
     }
-    .blank {
+    .blank, .filled {
       display: inline-block;
       min-width: 8vh;
       height: 6vh;
       margin: 0 0.4vw;
+      padding: 0 0.5vw;
+      box-sizing: border-box;
       vertical-align: middle;
-      background: #f4f4f4;
       border: 2px solid #1a1c2c;
+    }
+    .blank {
+      background: #f4f4f4;
       box-shadow: inset 0 0 0 1px #41a6f6;
+    }
+    .filled {
+      line-height: 5.4vh;
+      color: #145c32;
+      background: #e7ffd9;
+      box-shadow: inset 0 0 0 3px #38b764;
     }
     #hint {
       margin: 0;
@@ -571,6 +619,8 @@
       background: #1a1c2c;
     }
     .answer {
+      position: relative;
+      width: 100%;
       min-height: 15vh;
       display: flex;
       align-items: center;
@@ -588,10 +638,38 @@
       color: #1a1c2c;
       cursor: pointer;
     }
+    .answer-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2vw;
+    }
     .answer .num, .answer .word {
       font-family: "Pretendard", sans-serif;
       font-size: 7vh;
       line-height: 1;
+    }
+    .answer-mark {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      z-index: 2;
+      transform: translate(-50%, -38%);
+      font-family: "Pretendard", sans-serif;
+      font-size: 8.2vh;
+      font-weight: 700;
+      line-height: 0.8;
+      pointer-events: none;
+      animation: mark-pop 0.22s ease-out;
+    }
+    .answer .answer-mark.is-o { color: #1fbf4a; }
+    .answer .answer-mark.is-x { color: #ff2a3c; }
+    .answer-mark.is-o, .answer-mark.is-x {
+      text-shadow:
+        -0.28vh -0.28vh 0 #1a1c2c,
+        0.28vh -0.28vh 0 #1a1c2c,
+        -0.28vh 0.28vh 0 #1a1c2c,
+        0.28vh 0.28vh 0 #1a1c2c;
     }
     .answer:active:not(:disabled) { transform: translateY(2px); }
     .answer:disabled { cursor: default; opacity: 1; }
@@ -600,9 +678,15 @@
       background-color: transparent;
       background-image: url("asset/pic/아이템/박스.png");
     }
-    .answer.is-locked { filter: grayscale(1); color: #566c86; }
+    .answer.is-locked { color: #566c86; }
+    .answer.is-locked .answer-body { filter: grayscale(1); opacity: 0.72; }
     .answer.is-correct { box-shadow: inset 0 0 0 4px #38b764; }
     .answer.shake { animation: shake 0.3s linear; }
+    @keyframes mark-pop {
+      0% { transform: translate(-50%, -38%) scale(0.35); opacity: 0; }
+      65% { transform: translate(-50%, -46%) scale(1.12); opacity: 1; }
+      100% { transform: translate(-50%, -38%) scale(1); opacity: 1; }
+    }
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       25% { transform: translateX(-8px); }
@@ -618,7 +702,126 @@
       padding: 4vh 8vw 9vh;
       background: #1a1c2c;
     }
-    #screen-end .scroll-card { width: min(70vh, 48vw); }
+    #screen-end .scroll-card { width: min(56vh, 42vw); }
+    .end-caught {
+      width: min(92vw, 760px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8vh;
+    }
+    .end-caught-title, .end-caught-empty {
+      margin: 0;
+      font-size: 2.2vh;
+      color: #ffcd75;
+    }
+    .end-caught-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1vh 1.4vw;
+    }
+    .caught-card {
+      width: max(72px, 11vh);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2vh;
+      color: #f4f4f4;
+      font-size: max(12px, 1.6vh);
+      text-align: center;
+      line-height: 1.25;
+    }
+    .caught-card img {
+      width: max(52px, 8.4vh);
+      height: max(52px, 8.4vh);
+      object-fit: contain;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .caught-card b { color: #ffcd75; font-weight: 400; }
+
+    #dex-btn {
+      position: fixed;
+      top: 1.2vh;
+      left: 1.4vw;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 0.5vw;
+      height: 5.2vh;
+      min-height: 36px;
+      padding: 0 1.1vw 0 0.7vw;
+      background: rgba(41, 54, 111, 0.92);
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #73eff7, 0 2px 0 #1a1c2c;
+      color: #ffcd75;
+      font-size: 2vh;
+      cursor: pointer;
+    }
+    #dex-btn:active { transform: translateY(2px); }
+    #dex-btn svg {
+      width: 3.6vh;
+      height: 3.6vh;
+      display: block;
+      shape-rendering: crispEdges;
+    }
+    #modal-dex .modal-card {
+      width: min(94vw, 760px);
+    }
+    #dex-summary {
+      margin: -0.6vh 0 1.4vh;
+      text-align: center;
+      font-size: 2vh;
+      color: #73eff7;
+    }
+    #dex-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1vh 0.8vw;
+    }
+    .dex-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3vh;
+      padding: 0.8vh 0.4vw 0.7vh;
+      background: #1a1c2c;
+      border: 2px solid #1a1c2c;
+      box-shadow: inset 0 0 0 1px #566c86;
+      text-align: center;
+    }
+    .dex-item img {
+      width: max(52px, 8vh);
+      height: max(52px, 8vh);
+      object-fit: contain;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .dex-item.is-unknown img { filter: grayscale(1); opacity: 0.45; }
+    .dex-item.is-known { box-shadow: inset 0 0 0 2px #ffcd75; }
+    .dex-name {
+      font-size: max(12px, 1.7vh);
+      line-height: 1.3;
+      color: #f4f4f4;
+    }
+    .dex-item.is-unknown .dex-name,
+    .dex-item.is-unknown .dex-count { color: #7d8ca3; }
+    .dex-count { font-size: max(12px, 1.8vh); color: #ffcd75; }
+    #dex-reset {
+      display: block;
+      width: 100%;
+      margin-top: 1.6vh;
+      padding: 1.2vh 1vw;
+      border: 2px solid #1a1c2c;
+      background: #566c86;
+      color: #f4f4f4;
+      font-family: inherit;
+      font-size: 2vh;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #1a1c2c;
+    }
+    #dex-reset:active { transform: translateY(2px); box-shadow: 0 1px 0 #1a1c2c; }
     .end-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -742,17 +945,63 @@
       font-size: 2.6vh;
     }
     .choice.is-on { background: #38b764; color: #1a1c2c; }
+
+    #modal-quit { z-index: 46; background: rgba(26, 28, 44, 0.55); }
+    #modal-quit .scroll-card { width: min(78vh, 52vw); }
+    #quit-title { font-size: 3.4vh; color: #5a3d2b; line-height: 1.3; }
+    #quit-copy { font-size: 2.2vh; color: #5a3d2b; line-height: 1.4; }
+    .quit-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.2vw;
+      margin-top: 0.6vh;
+    }
+    .quit-actions button {
+      min-width: 9vw;
+      min-height: 5.2vh;
+      padding: 0 1.2vw;
+      font-family: inherit;
+      font-size: 2.2vh;
+      border: 2px solid #5a3d2b;
+      cursor: pointer;
+    }
+    .quit-actions button:active { transform: translateY(2px); }
+    #quit-stay {
+      background: #3b5dc9;
+      color: #f4f4f4;
+      box-shadow: inset 0 0 0 1px #73eff7, 0 2px 0 #5a3d2b;
+    }
+    #quit-home {
+      background: #f0a05a;
+      color: #1a1c2c;
+      box-shadow: inset 0 0 0 1px #ffcd75, 0 2px 0 #5a3d2b;
+    }
   </style>
 </head>
 <body>
   <div id="sound-dock">
-    <button id="sound-btn" type="button" aria-label="소리 조절" aria-expanded="false" title="소리 조절">♪</button>
+    <div id="dock-row">
+      <button id="quit-btn" type="button" hidden aria-label="그만하기" title="그만하기">↻</button>
+      <button id="sound-btn" type="button" aria-label="소리 조절" aria-expanded="false" title="소리 조절 · 두 번 누르면 음소거">♪</button>
+    </div>
     <div id="volume-panel" aria-hidden="true">
+      <button id="mute-btn" type="button" aria-pressed="false">음소거</button>
       <input id="volume-slider" type="range" min="0" max="100" value="50" orient="vertical" aria-label="음량">
     </div>
   </div>
 
   <section id="screen-title">
+    <button id="dex-btn" type="button" aria-label="슬라임 도감" title="슬라임 도감">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <rect x="2" y="1" width="12" height="14" fill="#5a3d2b"/>
+        <rect x="3" y="2" width="10" height="12" fill="#ffcd75"/>
+        <rect x="3" y="2" width="2" height="12" fill="#f0a05a"/>
+        <rect x="9" y="2" width="2" height="8" fill="#e23b4a"/>
+        <rect x="9" y="10" width="2" height="1" fill="#e23b4a"/>
+        <rect x="10" y="11" width="1" height="1" fill="#e23b4a"/>
+      </svg>
+      도감
+    </button>
     <div class="title-stack">
       <img class="title-logo" src="asset/pic/타이틀.png" alt="받침 용사와 슬라임 몬스터">
       <p id="load-error" hidden>문제 파일을 열지 못했습니다. 폴더를 그냥 더블클릭하지 말고, 교실 컴퓨터에서 이 폴더를 여는 주소로 접속해 주세요.</p>
@@ -812,11 +1061,11 @@
         <div id="end-stats">
           <p id="end-time"></p>
           <p id="end-attacks"></p>
-          <p id="end-slimes"></p>
         </div>
         <p id="end-copy"></p>
       </div>
     </div>
+    <div id="end-caught" class="end-caught"></div>
     <div class="end-actions">
       <button id="home-btn" type="button">홈</button>
       <button id="again-btn" type="button">다시 시작</button>
@@ -859,7 +1108,7 @@
     <span class="sep">|</span>
     <button type="button" class="linkish" id="open-creator">만든이</button>
     <span class="sep">|</span>
-    <span>버전 v2.0</span>
+    <span>버전 v2.1</span>
   </footer>
 
   <div id="modal-howto" class="modal-layer" hidden>
@@ -867,13 +1116,14 @@
       <button type="button" class="modal-close" data-close-modal aria-label="닫기">×</button>
       <h3 id="howto-title">이용방법</h3>
       <div class="modal-body">
-        <p><strong>세계관</strong><br>받침 마을에 슬라임 몬스터가 나타났다! 받침을 바르게 고르는 용사가 되면, 슬라임을 물리치고 마을을 지킬 수 있어요.</p>
+        <p><strong>세계관</strong><br>받침 마을에 슬라임 몬스터가 나타났다! 받침을 바르게 고르는 용사가 되면, 슬라임을 물리치고 마을을 지킬 수 있어요. 잡은 슬라임은 도감에 모아 보세요.</p>
         <p><strong>어떻게 이용하나요?</strong><br>
-          ① 모드(홑·쌍·겹·종합) 고르기<br>
-          ② 용사·제한 시간·하트 고르기<br>
-          ③ 시작하기 누르기<br>
-          ④ 문장 빈칸에 어울리는 받침을 ①②③ 중에서 고르기
+          ① 모드를 골라요. 위에는 홑받침, 쌍받침, 겹받침이 있고, 아래에는 종합이 있어요.<br>
+          ② 함께할 용사, 제한 시간, 하트 개수를 고르고 시작하기를 눌러요.<br>
+          ③ 문장 빈칸에 어울리는 받침을 골라요.<br>
+          ④ 한 단계를 깨면 그 슬라임을 잡은 거예요. 게임이 끝나면 토벌 결과에서 이번에 잡은 슬라임 그림과 횟수를 볼 수 있어요.
         </p>
+        <p><strong>슬라임 도감</strong><br>시작 화면 왼쪽 위 도감 버튼을 누르면, 지금까지 잡은 슬라임을 볼 수 있어요.</p>
         <p><strong>언제 쓰면 좋을까요?</strong><br>국어 받침 학습 시간, 아침 활동, 쉬는 시간 미니 게임, 복습·정리 시간에 짧게 돌려 보기 좋아요.</p>
         <p><strong>누구와 함께?</strong><br>교실 친구들과 함께, 선생님과 한 문제씩, 또는 집에서 가족과 번갈아 가며 즐겨 보세요.</p>
       </div>
@@ -893,6 +1143,30 @@
       </div>
       <p class="creator-bio">아이들과 교실에서 바로 쓰려고 만든 ‘받침 용사와 슬라임 몬스터’예요. 받침을 고르며 함께 모험하는 시간을 응원해요!</p>
       <a class="modal-cta" href="https://www.instagram.com/hello.nan_ssaem/" target="_blank" rel="noopener noreferrer">인스타그램 놀러가기 →</a>
+    </div>
+  </div>
+
+  <div id="modal-dex" class="modal-layer" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="dex-title">
+      <button type="button" class="modal-close" data-close-modal aria-label="닫기">×</button>
+      <h3 id="dex-title">슬라임 도감</h3>
+      <p id="dex-summary">잡은 종류 0 / 16</p>
+      <div id="dex-grid"></div>
+      <button id="dex-reset" type="button">기록 초기화</button>
+    </div>
+  </div>
+
+  <div id="modal-quit" class="modal-layer" hidden>
+    <div class="scroll-card" role="dialog" aria-modal="true" aria-labelledby="quit-title">
+      <img src="asset/pic/아이템/두루마리.png" alt="">
+      <div class="scroll-copy">
+        <p id="quit-title">정말 그만할래요?</p>
+        <p id="quit-copy">홈으로 가면 이번 모험은 끝나요.</p>
+        <div class="quit-actions">
+          <button id="quit-stay" type="button">계속하기</button>
+          <button id="quit-home" type="button">홈으로</button>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -1,10 +1,17 @@
 (function () {
   var NUM = ['①', '②', '③'];
   var CARDS = [
-    { id: 'cluster', label: '겹받침' },
+    { id: 'single', label: '홑받침' },
     { id: 'double', label: '쌍받침' },
-    { id: 'single', label: '홑받침' }
+    { id: 'cluster', label: '겹받침' }
   ];
+  var SLIMES = [
+    '파랑 슬라임', '분홍 슬라임', '보라 슬라임', '리본 슬라임',
+    '반짝이 슬라임', '불꽃 슬라임', '얼음 슬라임', '찌릿 슬라임',
+    '독성 슬라임', '진흙 슬라임', '바다 슬라임', '꿀꿀 슬라임',
+    '유령 슬라임', '악마 슬라임', '기사 슬라임', '우주 슬라임'
+  ];
+  var DEX_KEY = 'batchim-warrior-slime-dex-v1';
   var HEROES = ['남1', '남2', '여1', '여2'];
   var CHEERS = [
     '우리 반 정말 대단해요!',
@@ -27,6 +34,8 @@
   var heroName = '남1';
   var pendingMode = 'single';
   var slimeStage = 0;
+  var currentSlime = '';
+  var runCatches = [];
   var attacking = false;
   var attackTimer = 0;
   var gameStartedAt = 0;
@@ -39,6 +48,10 @@
   var fx = { mode: 'idle', started: 0 };
   var bgmReady = false;
   var volume = 0.5;
+  var volumeBeforeMute = 0.5;
+  var quitOpen = false;
+  var resumeLimit = null;
+  var resumeStage = null;
 
   var titleScreen = document.getElementById('screen-title');
   var gameScreen = document.getElementById('screen-game');
@@ -68,7 +81,13 @@
   var shotEl = document.getElementById('shot');
   var endTime = document.getElementById('end-time');
   var endAttacks = document.getElementById('end-attacks');
-  var endSlimes = document.getElementById('end-slimes');
+  var endCaught = document.getElementById('end-caught');
+  var dexBtn = document.getElementById('dex-btn');
+  var dexModal = document.getElementById('modal-dex');
+  var dexGrid = document.getElementById('dex-grid');
+  var dexSummary = document.getElementById('dex-summary');
+  var dexReset = document.getElementById('dex-reset');
+  var dexResetArmed = false;
   var endCopy = document.getElementById('end-copy');
   var againBtn = document.getElementById('again-btn');
   var homeBtn = document.getElementById('home-btn');
@@ -77,6 +96,9 @@
   var soundBtn = document.getElementById('sound-btn');
   var volumePanel = document.getElementById('volume-panel');
   var volumeSlider = document.getElementById('volume-slider');
+  var muteBtn = document.getElementById('mute-btn');
+  var quitBtn = document.getElementById('quit-btn');
+  var quitModal = document.getElementById('modal-quit');
   var setupBack = document.getElementById('setup-back');
   var howtoModal = document.getElementById('modal-howto');
   var creatorModal = document.getElementById('modal-creator');
@@ -110,6 +132,50 @@
   function closeAllModals() {
     closeModal(howtoModal);
     closeModal(creatorModal);
+    closeModal(dexModal);
+    dexResetArmed = false;
+    if (dexReset) dexReset.textContent = '기록 초기화';
+  }
+
+  function slimePath(name) {
+    return picture('asset/pic/슬라임/' + name + '.png');
+  }
+
+  function loadDex() {
+    try {
+      var raw = localStorage.getItem(DEX_KEY);
+      var data = raw ? JSON.parse(raw) : {};
+      var dex = {};
+      SLIMES.forEach(function (name) {
+        var count = Number(data[name]);
+        dex[name] = isFinite(count) && count > 0 ? Math.floor(count) : 0;
+      });
+      return dex;
+    } catch (err) {
+      var empty = {};
+      SLIMES.forEach(function (name) { empty[name] = 0; });
+      return empty;
+    }
+  }
+
+  function saveDex(dex) {
+    try {
+      localStorage.setItem(DEX_KEY, JSON.stringify(dex));
+    } catch (err) {}
+  }
+
+  function noteDefeat(name) {
+    if (!name || SLIMES.indexOf(name) === -1) return;
+    runCatches.push(name);
+    var dex = loadDex();
+    dex[name] = (dex[name] || 0) + 1;
+    saveDex(dex);
+  }
+
+  function pickSlimeName(except) {
+    var pool = SLIMES.filter(function (name) { return name !== except; });
+    if (!pool.length) pool = SLIMES.slice();
+    return pool[Math.floor(Math.random() * pool.length)];
   }
 
   function picture(path) {
@@ -130,11 +196,91 @@
   });
 
   function applyVolume() {
+    var muted = volume <= 0.001;
     if (bgmEl) bgmEl.volume = volume;
     Object.keys(sfx).forEach(function (key) {
       sfx[key].volume = Math.min(1, volume);
     });
-    if (soundBtn) soundBtn.classList.toggle('is-muted', volume <= 0.001);
+    if (soundBtn) {
+      soundBtn.classList.toggle('is-muted', muted);
+      soundBtn.setAttribute('aria-label', muted ? '음소거됨, 소리 조절' : '소리 조절');
+      soundBtn.title = muted ? '음소거 중 · 두 번 누르면 소리 켜기' : '소리 조절 · 두 번 누르면 음소거';
+    }
+    if (muteBtn) {
+      muteBtn.textContent = muted ? '소리 켜기' : '음소거';
+      muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+    }
+  }
+
+  function toggleMute() {
+    if (volume <= 0.001) {
+      volume = volumeBeforeMute > 0.001 ? volumeBeforeMute : 0.5;
+    } else {
+      volumeBeforeMute = volume;
+      volume = 0;
+    }
+    if (volumeSlider) volumeSlider.value = String(Math.round(volume * 100));
+    applyVolume();
+    if (volume > 0.001) startBgm();
+  }
+
+  function closeVolumePanel() {
+    if (!volumePanel) return;
+    volumePanel.classList.remove('is-open');
+    volumePanel.setAttribute('aria-hidden', 'true');
+    if (soundBtn) soundBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  function setQuitVisible(show) {
+    if (!quitBtn) return;
+    quitBtn.hidden = !show;
+  }
+
+  function rememberTimers() {
+    resumeLimit = null;
+    resumeStage = null;
+    if (!engine) return;
+    if (engine.state.phase === 'open' && engine.state.settings.timeLimit > 0) {
+      var left = Number(timerCount.textContent);
+      resumeLimit = isFinite(left) ? left : engine.state.settings.timeLimit;
+    }
+    if (engine.state.phase === 'stage') {
+      var stageLeft = Number(stageCountdown.textContent);
+      resumeStage = isFinite(stageLeft) && stageLeft > 0 ? stageLeft : 3;
+    }
+  }
+
+  function openQuit() {
+    if (!quitModal || gameScreen.hidden || quitOpen) return;
+    quitOpen = true;
+    rememberTimers();
+    clearTimers();
+    closeVolumePanel();
+    quitModal.hidden = false;
+  }
+
+  function resumeGame() {
+    if (!quitOpen) return;
+    quitOpen = false;
+    if (quitModal) quitModal.hidden = true;
+    armPhase();
+  }
+
+  function leaveToTitle() {
+    quitOpen = false;
+    resumeLimit = null;
+    resumeStage = null;
+    if (quitModal) quitModal.hidden = true;
+    clearTimers();
+    clearTimeout(attackTimer);
+    attacking = false;
+    if (shotEl) shotEl.hidden = true;
+    if (heroEl) heroEl.classList.remove('hurt');
+    gameScreen.hidden = true;
+    endScreen.hidden = true;
+    setupScreen.hidden = true;
+    titleScreen.hidden = false;
+    setQuitVisible(false);
   }
 
   function startBgm() {
@@ -222,7 +368,13 @@
     if (engine.state.phase === 'celebrate') {
       var done = document.createElement('p');
       done.className = 'done-line';
-      done.textContent = current.sentence.replace('{value}', current.answer);
+      var filledParts = current.sentence.split('{value}');
+      done.appendChild(document.createTextNode(filledParts[0] || ''));
+      var filled = document.createElement('span');
+      filled.className = 'filled';
+      filled.textContent = current.answer;
+      done.appendChild(filled);
+      done.appendChild(document.createTextNode(filledParts[1] || ''));
       questionEl.appendChild(done);
       return;
     }
@@ -251,9 +403,21 @@
       var word = document.createElement('span');
       word.className = 'word';
       word.textContent = opt;
-      button.appendChild(num);
-      button.appendChild(word);
+      var body = document.createElement('span');
+      body.className = 'answer-body';
+      body.appendChild(num);
+      body.appendChild(word);
+      button.appendChild(body);
       var used = state.disabled.indexOf(opt) !== -1;
+      var showO = state.phase === 'celebrate' && opt === state.current.answer;
+      var showX = used;
+      if (showO || showX) {
+        var mark = document.createElement('span');
+        mark.className = 'answer-mark ' + (showO ? 'is-o' : 'is-x');
+        mark.textContent = showO ? 'O' : 'X';
+        mark.setAttribute('aria-hidden', 'true');
+        button.appendChild(mark);
+      }
       if (used) button.classList.add('is-locked');
       if (state.phase === 'reveal' && opt === state.current.answer) button.classList.add('is-correct');
       button.disabled = state.phase !== 'open' || used;
@@ -295,23 +459,53 @@
     return min + '분 ' + sec + '초';
   }
 
-  // n단계에서 끝나면 1~(n-1)단계 슬라임만 토벌로 셉니다. 5의 배수는 대왕.
-  function formatSlimeReport(stage) {
-    var cleared = Math.max(0, stage - 1);
-    var normal = 0;
-    var boss = 0;
-    for (var s = 1; s <= cleared; s++) {
-      if (s % 5 === 0) boss += 1;
-      else normal += 1;
+  function renderEndCaught() {
+    if (!endCaught) return;
+    endCaught.textContent = '';
+    var title = document.createElement('p');
+    title.className = 'end-caught-title';
+    title.textContent = '이번엔 잡은 슬라임';
+    endCaught.appendChild(title);
+    if (!runCatches.length) {
+      var empty = document.createElement('p');
+      empty.className = 'end-caught-empty';
+      empty.textContent = '아직 없어요.';
+      endCaught.appendChild(empty);
+      return;
     }
-    if (normal > 0 && boss > 0) {
-      return '토벌한 슬라임: 일반 ' + normal + '마리 + 대왕 ' + boss + '마리';
-    }
-    if (boss > 0) return '토벌한 슬라임: 대왕 ' + boss + '마리';
-    return '토벌한 슬라임: 일반 ' + normal + '마리';
+    var order = [];
+    var counts = {};
+    runCatches.forEach(function (name) {
+      if (!counts[name]) order.push(name);
+      counts[name] = (counts[name] || 0) + 1;
+    });
+    var row = document.createElement('div');
+    row.className = 'end-caught-row';
+    order.forEach(function (name) {
+      var card = document.createElement('div');
+      card.className = 'caught-card';
+      var img = document.createElement('img');
+      img.src = slimePath(name);
+      img.alt = name;
+      var label = document.createElement('span');
+      label.textContent = name;
+      var count = document.createElement('b');
+      count.textContent = counts[name] + '번';
+      card.appendChild(img);
+      card.appendChild(label);
+      card.appendChild(count);
+      row.appendChild(card);
+    });
+    endCaught.appendChild(row);
   }
 
   function showEnd() {
+    if (quitOpen) return;
+    if (engine && engine.state.phase === 'clear' && engine.state.solvedInStage >= BatchimEngine.STAGE_SIZE && currentSlime) {
+      noteDefeat(currentSlime);
+      currentSlime = '';
+    }
+    setQuitVisible(false);
     clearTimers();
     clearTimeout(attackTimer);
     attacking = false;
@@ -322,14 +516,47 @@
     var elapsed = gameStartedAt ? Date.now() - gameStartedAt : 0;
     endTime.textContent = '걸린 시간: ' + formatPlayTime(elapsed);
     endAttacks.textContent = '공격 횟수: ' + attackCount + '회';
-    endSlimes.textContent = formatSlimeReport(engine.state.stage);
     endCopy.textContent = CHEERS[Math.floor(Math.random() * CHEERS.length)];
+    renderEndCaught();
+  }
+
+  function renderDex() {
+    if (!dexGrid) return;
+    var dex = loadDex();
+    var known = 0;
+    dexGrid.textContent = '';
+    SLIMES.forEach(function (name) {
+      var count = dex[name] || 0;
+      if (count > 0) known += 1;
+      var item = document.createElement('div');
+      item.className = 'dex-item' + (count > 0 ? ' is-known' : ' is-unknown');
+      var img = document.createElement('img');
+      img.src = slimePath(name);
+      img.alt = count > 0 ? name : name + ', 아직 못 잡음';
+      var label = document.createElement('span');
+      label.className = 'dex-name';
+      label.textContent = name;
+      var times = document.createElement('span');
+      times.className = 'dex-count';
+      times.textContent = count + '번';
+      item.appendChild(img);
+      item.appendChild(label);
+      item.appendChild(times);
+      dexGrid.appendChild(item);
+    });
+    if (dexSummary) dexSummary.textContent = '잡은 종류 ' + known + ' / ' + SLIMES.length;
   }
 
   function armPhase() {
     clearTimers();
-    if (!engine || gameScreen.hidden || !setupScreen.hidden) return;
+    if (!engine || gameScreen.hidden || !setupScreen.hidden) {
+      resumeLimit = null;
+      resumeStage = null;
+      return;
+    }
     var state = engine.state;
+    if (state.phase !== 'open') resumeLimit = null;
+    if (state.phase !== 'stage') resumeStage = null;
     if (state.phase === 'think') {
       thinkTimer = setTimeout(function () {
         engine.finishThink();
@@ -338,6 +565,10 @@
       }, state.settings.thinkTime * 1000);
     } else if (state.phase === 'open' && state.settings.timeLimit > 0) {
       var leftSec = state.settings.timeLimit;
+      if (resumeLimit != null) {
+        leftSec = resumeLimit;
+        resumeLimit = null;
+      }
       timerCount.textContent = String(leftSec);
       limitTimer = setInterval(function () {
         if (engine.state.phase !== 'open') {
@@ -366,7 +597,7 @@
           render();
           armPhase();
         }
-      }, 1500);
+      }, 2500);
     } else if (state.phase === 'reveal') {
       resolveTimer = setTimeout(function () {
         engine.finishResolve();
@@ -376,7 +607,7 @@
           render();
           armPhase();
         }
-      }, 800);
+      }, 1500);
     } else if (state.phase === 'stage') {
       if (!state.bubble) {
         engine.finishStage();
@@ -388,6 +619,10 @@
       } else {
         fillStageScroll();
         var left = 3;
+        if (resumeStage != null) {
+          left = resumeStage;
+          resumeStage = null;
+        }
         stageCountdown.textContent = String(left);
         stageTimer = setInterval(function () {
           left -= 1;
@@ -410,6 +645,7 @@
   }
 
   function choose(text) {
+    if (quitOpen) return;
     if (!engine || engine.state.phase !== 'open') return;
     var result = engine.press(text);
     if (!result.ok) return;
@@ -422,7 +658,7 @@
     }
     if (engine.state.phase === 'encourage') {
       render();
-      setTimeout(showEnd, 700);
+      setTimeout(showEnd, 1200);
       return;
     }
     render();
@@ -450,9 +686,11 @@
   function syncActors() {
     if (!engine) return;
     if (slimeStage !== engine.state.stage) {
+      if (slimeStage > 0 && currentSlime) noteDefeat(currentSlime);
       slimeStage = engine.state.stage;
-      var pick = 1 + Math.floor(Math.random() * 16);
-      slimeEl.src = picture('asset/pic/슬라임/' + pick + '.png');
+      currentSlime = pickSlimeName(currentSlime);
+      slimeEl.src = slimePath(currentSlime);
+      slimeEl.alt = currentSlime;
       slimeEl.classList.remove('hit');
       pickSlimeIdle();
     }
@@ -522,6 +760,8 @@
   function begin(items) {
     showHero();
     slimeStage = 0;
+    currentSlime = '';
+    runCatches = [];
     attackCount = 0;
     gameStartedAt = Date.now();
     slimeEl.classList.remove('is-boss', 'hit');
@@ -530,6 +770,9 @@
     engine = BatchimEngine.createEngine(shuffled, settings);
     engine.start();
     fx.mode = 'idle';
+    quitOpen = false;
+    if (quitModal) quitModal.hidden = true;
+    setQuitVisible(true);
     titleScreen.hidden = true;
     setupScreen.hidden = true;
     endScreen.hidden = true;
@@ -618,8 +861,16 @@
     volumeSlider.value = String(Math.round(volume * 100));
     volumeSlider.addEventListener('input', function () {
       volume = Number(volumeSlider.value) / 100;
+      if (volume > 0.001) volumeBeforeMute = volume;
       applyVolume();
       startBgm();
+    });
+  }
+  if (muteBtn) {
+    muteBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      armAudio();
+      toggleMute();
     });
   }
   if (soundBtn && volumePanel) {
@@ -639,21 +890,29 @@
       event.preventDefault();
       event.stopPropagation();
       clearTimeout(soundClickTimer);
-      volume = 0;
-      if (volumeSlider) volumeSlider.value = '0';
-      applyVolume();
-      volumePanel.classList.remove('is-open');
-      volumePanel.setAttribute('aria-hidden', 'true');
-      soundBtn.setAttribute('aria-expanded', 'false');
+      armAudio();
+      toggleMute();
+      closeVolumePanel();
     });
     document.addEventListener('pointerdown', function (event) {
       if (!volumePanel.classList.contains('is-open')) return;
       var dock = document.getElementById('sound-dock');
-      if (dock && !dock.contains(event.target)) {
-        volumePanel.classList.remove('is-open');
-        volumePanel.setAttribute('aria-hidden', 'true');
-        soundBtn.setAttribute('aria-expanded', 'false');
-      }
+      if (dock && !dock.contains(event.target)) closeVolumePanel();
+    });
+  }
+  if (quitBtn) {
+    quitBtn.addEventListener('click', function (event) {
+      event.stopPropagation();
+      openQuit();
+    });
+  }
+  var quitStay = document.getElementById('quit-stay');
+  var quitHome = document.getElementById('quit-home');
+  if (quitStay) quitStay.addEventListener('click', resumeGame);
+  if (quitHome) quitHome.addEventListener('click', leaveToTitle);
+  if (quitModal) {
+    quitModal.addEventListener('click', function (event) {
+      if (event.target === quitModal) resumeGame();
     });
   }
   if (setupBack) {
@@ -666,12 +925,14 @@
   if (openHowto) {
     openHowto.addEventListener('click', function () {
       closeModal(creatorModal);
+      closeModal(dexModal);
       openModal(howtoModal);
     });
   }
   if (openCreator) {
     openCreator.addEventListener('click', function () {
       closeModal(howtoModal);
+      closeModal(dexModal);
       openModal(creatorModal);
     });
   }
@@ -680,18 +941,47 @@
       closeAllModals();
     });
   });
-  [howtoModal, creatorModal].forEach(function (modal) {
+  if (dexBtn) {
+    dexBtn.addEventListener('click', function () {
+      closeModal(howtoModal);
+      closeModal(creatorModal);
+      dexResetArmed = false;
+      if (dexReset) dexReset.textContent = '기록 초기화';
+      renderDex();
+      openModal(dexModal);
+    });
+  }
+  if (dexReset) {
+    dexReset.addEventListener('click', function () {
+      if (!dexResetArmed) {
+        dexResetArmed = true;
+        dexReset.textContent = '정말 지울까요?';
+        return;
+      }
+      try { localStorage.removeItem(DEX_KEY); } catch (err) {}
+      dexResetArmed = false;
+      dexReset.textContent = '기록 초기화';
+      renderDex();
+    });
+  }
+  [howtoModal, creatorModal, dexModal].forEach(function (modal) {
     if (!modal) return;
     modal.addEventListener('click', function (event) {
       if (event.target === modal) closeModal(modal);
     });
   });
   document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') closeAllModals();
+    if (event.key !== 'Escape') return;
+    if (quitOpen) {
+      resumeGame();
+      return;
+    }
+    closeAllModals();
   });
 
   document.addEventListener('keydown', function (event) {
     if (event.repeat) return;
+    if (quitOpen) return;
     if (!engine || gameScreen.hidden || !setupScreen.hidden) return;
     var index = { Digit1: 0, Digit2: 1, Digit3: 2, Numpad1: 0, Numpad2: 1, Numpad3: 2 }[event.code];
     if (index == null) return;
@@ -725,13 +1015,7 @@
   againBtn.addEventListener('click', function () {
     begin(BatchimHangul.fisherYates(modeItems.slice()));
   });
-  homeBtn.addEventListener('click', function () {
-    clearTimers();
-    endScreen.hidden = true;
-    gameScreen.hidden = true;
-      setupScreen.hidden = true;
-      titleScreen.hidden = false;
-  });
+  homeBtn.addEventListener('click', leaveToTitle);
 
   buildCards();
   renderSettings();
